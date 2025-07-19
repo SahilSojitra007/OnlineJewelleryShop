@@ -1,0 +1,107 @@
+﻿@model OnlineJewelleryShop.Models.JewelleryMasterModel
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        @Html.HiddenFor(x => x.Id)
+        <div class="col-6">
+            <div class="col-sm-12" style="margin-bottom: 2%;">
+                <b>JewelleryName</b>
+                @Html.TextBoxFor(x => x.JewelleryName, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-12" style="margin-bottom: 2%;">
+                <b>JewelleryType</b>
+                @Html.DropDownListFor(x => x.JewelleryType, ViewBag.Typelst as SelectList, "Select Type", new { @class = "form-control" })
+            </div>
+            <div class="col-sm-12" style="margin-bottom: 2%;">
+                <b>Description</b>
+                @Html.TextAreaFor(x => x.Description, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-12" style="margin-bottom: 2%;">
+                <b>Price</b>
+                @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @type = "number" })
+            </div>
+            <div class="col-sm-12" style="margin-bottom: 2%;">
+                <b>JewelleryCategory</b>
+                @Html.DropDownListFor(x => x.JewelleryCategory, ViewBag.Categorylst as SelectList, "Select Jewellery Category", new { @class = "form-control" })
+            </div>
+            <div class="col-sm-12" style="margin-bottom: 2%;">
+                <b>JewelleryImage</b>
+                @Html.HiddenFor(x=>x.JewelleryImage)
+                <input type="file" id="ImagesFile" name="ImagesFile" />
+            </div>
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-success" value="Submit" id="btnSubmit" />
+                <a href="@Url.Action("Index","Jewellery")" class="btn btn-default">Back</a>
+            </div>
+        </div>
+        <div class="col-6">
+            <img id="DisplayImage" class="photo" style="height: 400px; width: 400px;" />
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#DisplayImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else if ($("#JewelleryImage").val() != "") {
+            $('#DisplayImage').attr('src', "/UserImages/" + $("#JewelleryImage").val());
+        }
+
+    }
+
+    $("#ImagesFile").change(function () {
+        readURL(this);
+    });
+
+    $(document).ready(function () {
+        readURL(this);
+        $(function () {
+            $('#MfgDate').datetimepicker({
+                autoclose: true
+            });
+            $('#ExpDate').datetimepicker({
+                autoclose: true
+            });
+        });
+        $("#btnSubmit").on("click", validationOnSubmit);
+    });
+    function validationOnSubmit() {
+        if ($("#JewelleryName").val() == "") {
+            alert("Please Enter Jewellery Name");
+            $("#JewelleryName").focus();
+            return false;
+        }
+        else if ($("#JewelleryType").val() == "") {
+            alert("Please Enter Jewellery Type");
+            $("#JewelleryType").focus();
+            return false;
+        }
+        else if ($("#Price").val() == "") {
+            alert("Please Enter Price");
+            $("#Price").focus();
+            return false;
+        }
+        else if ($("#JewelleryCategory").val() == "") {
+            alert("Please Enter Jewellery Category");
+            $("#JewelleryCategory").focus();
+            return false;
+        }
+        else if ($("#ImagesFile").val() == "") {
+            alert("Please Enter Jewellery Image");
+            $("#ImagesFile").focus();
+            return false;
+        }
+
+    }
+</script>

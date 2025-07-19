@@ -1,0 +1,42 @@
+﻿@model OnlineJewelleryShop.Models.JewelleryMasterListModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a href="@Url.Action("Detail","Jewellery")" class="btn btn-primary"> New</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Jewellery Name</td>
+            <td>Jewellery Type</td>
+            <td>Price</td>
+            <td>Jewellery Category</td>
+            <td>Jewellery Image</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model.JewelleryList)
+        {
+            <tr>
+                <td>@item.JewelleryName</td>
+                <td>@item.JewelleryTypeName</td>
+                <td>@item.Price</td>
+                <td>@item.JewelleryCategoryName</td>
+                <td><img src="UserImages/@item.JewelleryImage" alt="" height=50 width=50 /></td>
+                <td><a href="@Url.Action("Detail","Jewellery")?Id=@item.Id" class="btn btn-info">Edit</a></td>
+                <td><a href="@Url.Action("Delete","Jewellery")?Id=@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+

@@ -1,0 +1,85 @@
+﻿@model OnlineJewelleryShop.Models.JewelleryMasterListModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        @Html.HiddenFor(x => x.Id)
+        <div class="col-sm-12">
+            <lable>Jewellery Name</lable>
+            @Html.TextBoxFor(x=> x.JewelleryName, new { @class= "form-control", @style="width:40% "})
+        </div>
+        <div class="col-sm-12">
+            <lable>Jewellery Type</lable>
+            @Html.DropDownListFor(x=>x.JewelleryType,ViewBag.Typelst as SelectList, "Select Type", new { @class = "form-control", @style = "width:40%" })
+        </div>
+        <div class="col-sm-12">
+            <lable>Price</lable>
+            @Html.TextBoxFor(x=>x.Price,new { @class="form-control",@style="width:40%", @type = "number" })
+        </div>
+        <div class="col-sm-12">
+            <lable>Jewellery Category</lable>
+            @Html.DropDownListFor(x => x.JewelleryCategory, ViewBag.Categorylst as SelectList, "Select Jewellery Category", new { @class = "form-control", @style = "width:40%" })
+        </div>
+        <div class="col-sm-12">
+            <lable>JewelleryImage</lable>
+            <input type="file" id="ImagesFile" name="ImagesFile" />
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-success" value="Submit" id="btnSubmit" />
+                <a href="@Url.Action("Index","Jewellery")" class="btn btn-default">Back</a>
+            </div>
+        </div>
+
+
+    </div>
+
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $(function () {
+        $('#MfgDate').datepicker({
+            autoclose: true
+
+        });
+        $('#ExpDate').datepicker({
+            autoclose: true
+
+        });
+    });
+    $("#btnSubmit").on("click", validationOnSubmit);
+    });
+    function validationOnSubmit()
+    {
+        if($("#JewelleryName").val()=="")
+        {
+            alert("Please Enter Jewellery Name");
+            $("#JewelleryName").focus();
+            return false;
+        }
+        else if ($("#JewelleryType").val() == "") {
+            alert("Please Enter Jewellery Type");
+            $("#JewelleryType").focus();
+            return false;
+        }
+        else if ($("#Price").val() == "") {
+            alert("Please Enter Price");
+            $("#Price").focus();
+            return false;
+        }
+        else if ($("#JewelleryCategory").val() == "") {
+            alert("Please Enter Jewellery Category");
+            $("#JewelleryCategory").focus();
+            return false;
+        }
+        else if ($("#ImagesFile").val() == "") {
+            alert("Please Enter Jewellery Image");
+            $("#ImagesFile").focus();
+            return false;
+        }
+    }
+    </script>
+

@@ -1,0 +1,35 @@
+﻿@model OnlineJewelleryShop.Models.TypeMasterModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        @Html.HiddenFor(x => x.Id)
+        <div class="col-sm-12">
+            <label>Type Name</label>
+            @Html.TextBoxFor(x => x.TypeName, new { @class = "form-control", @style = "width:40%" }) <br />
+        </div> 
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-success" value="Submit" id="btnSubmit" /> 
+                <a href="@Url.Action("Index","Type")" class="btn btn-default">Back</a>
+            </div>
+        </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $("#btnSubmit").on("click", validationOnSubmit);
+    });
+
+    function validationOnSubmit()
+    {
+        debugger;
+        if ($("#TypeName").val() == "")
+        {
+            alert("Type Name can't be blank");
+            $("#TypeName").focus();
+            return false;
+        }
+    }
+</script>

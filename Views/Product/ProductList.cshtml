@@ -1,0 +1,82 @@
+﻿@model OnlineJewelleryShop.Models.JewelleryMasterListModel
+@{
+    ViewBag.Title = "ProductList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int Id = 0;
+    string CategoryName = "";
+    var db = new OnlineJewelleryShop.OnlineJewelleryEntities();
+    if (Request.QueryString["Id"] != null)
+    {
+        Id = Convert.ToInt32(Request.QueryString["Id"].ToString());
+        var objCategory = db.CategoryMasters.Where(x => x.Id == Id).FirstOrDefault();
+        if (objCategory != null)
+        {
+            CategoryName = objCategory.CategoryName;
+        }
+    }
+}
+
+<div class="top-brands">
+    <div class="container">
+        <h3>@CategoryName</h3>
+        <div class="agile_top_brands_grids">
+            @if (Model.JewelleryList.Count == 0)
+            {
+                <span>No product available.</span>
+            }
+
+            @foreach (var item in Model.JewelleryList)
+            {
+                <div class="col-md-3 top_brand_left">
+                    <div class="hover14 column">
+                        <div class="agile_top_brand_left_grid">
+                            <div class="agile_top_brand_left_grid1">
+                                <figure>
+                                    <div class="snipcart-item block">
+                                        <div class="snipcart-thumb">
+                                            <a href="@Url.Action("ProductDetail", "Product")?Id=@item.Id"><img src="/UserImages/@item.JewelleryImage" alt=" " class="img-responsive" /></a>
+                                            <p>@item.JewelleryName</p>
+                                            <h4>₹@item.Price.ToString()</h4>
+                                        </div>
+                                        <div class="snipcart-details">
+                                            <input type="button" name="submit" data-mid="@item.Id" value="Add to cart" class="button clsAddToCart" />
+                                        </div>
+                                    </div>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.clsAddToCart').on('click', function () {
+        var tblCartMaster = {
+            "PID": $(this).data("mid"),
+            "Qty": 1
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("AddCartAjax", "ShoppingCart")',
+            data: { "tblCartMaster": tblCartMaster},
+            success: function (data) {
+                if (data.response == "login") {
+                    window.location.href = "@Url.Action("Index", "Login")";
+                }
+                else {
+                    alert("Jewellery move to cart list.");
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+</script>
+

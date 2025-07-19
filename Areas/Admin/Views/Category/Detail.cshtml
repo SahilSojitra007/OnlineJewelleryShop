@@ -1,0 +1,38 @@
+﻿@model OnlineJewelleryShop.Models.CategoryMasterModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        @Html.HiddenFor(x=>x.Id)
+        <div class="col-sm-12">
+            <div class=" form-group">
+                <label>CategoryName</label>
+                @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", @style = "width:40%" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="submit" class="btn btn-success" value="Submit" id="btnSubmit" />
+                <a href="@Url.Action("Index","Category")" class="btn btn-default">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSubmit").on("click", validationOnSubmit);
+    })
+
+    function validationOnSubmit()
+    {
+        if ($("#CategoryName").val() == "")
+        {
+            alert("Type Name can't be blank");
+            $("#CategoryName").focus();
+            return false;
+        }
+    }
+</script>

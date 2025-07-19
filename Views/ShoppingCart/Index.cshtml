@@ -1,0 +1,98 @@
+﻿@model List<OnlineJewelleryShop.CartMaster>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
+    var db = new OnlineJewelleryShop.OnlineJewelleryEntities();
+}
+
+<div class="privacy about">
+    <h3>Cart List</h3>
+    <div class="checkout-right">
+        
+        <h4>Your shopping cart contains: <span>@Model.Count Jewellery</span></h4>
+        <table class="timetable_sub">
+            <thead>
+                <tr>
+                    <th>SL No.</th>
+                    <th>Jewellery Image</th>
+                    <th>Quality</th>
+                    <th>Jewellery Name</th>
+                    <th>Price</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    i++;
+                    string ProductName = "", ProductImage = "";
+                        decimal? ProductPrice = 0;
+                    var objProduct = db.JewelleryMasters.Where(x => x.Id == item.PId).FirstOrDefault();
+                    if (objProduct != null)
+                    {
+                        ProductName = objProduct.JewelleryName;
+                        ProductImage = "/UserImages/" + objProduct.JewelleryImage;
+                        ProductPrice = objProduct.Price;
+                    }
+
+                    <tr class="rem_@i">
+                        <td class="invert">@i</td>
+                        <td class="invert-image">
+                            <a href="#">
+                                <img src="@ProductImage" alt="@ProductName" class="img-responsive" style="width: 100px;">
+                            </a>
+                        </td>
+                        <td class="invert">
+                            <div class="quantity">
+                                <div class="quantity-select">
+                                    <div class="entry value-minus">&nbsp;</div>
+                                    <div class="entry value"><span>@item.Qty</span></div>
+                                    <div class="entry value-plus active">&nbsp;</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="invert">@ProductName</td>
+                        <td class="invert">@ProductPrice </td>
+                        <td class="invert">
+                            <div class="rem"><div class="close1" onclick="removeItem('@i');" ></div></div>
+                            <div class="rem"><a href="@Url.Action("Delete","ShoppingCart")?Id=@item.Id" class="close1 about" onclick="return confirm('Are you sure?');"></a></div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="checkout-left">
+        <div class="col-md-8 address_form_agile">
+            <div class="checkout-right-basket">
+                <a href="Checkout">Checkout <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        //$("#Count").val(@Model.Count);
+    });
+    
+    $('.value-plus').on('click', function () {
+        var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10) + 1;
+        divUpd.text(newVal);
+    });
+
+    $('.value-minus').on('click', function () {
+        var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10) - 1;
+        if (newVal >= 1) divUpd.text(newVal);
+    });
+
+    function removeItem(Id) {
+        $('.rem_' + Id).fadeOut('slow', function (c) {
+            $('.rem_' + Id).remove();
+           
+        });
+    }
+</script>

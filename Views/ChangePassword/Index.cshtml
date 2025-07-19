@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="w3_login">
+    <h3>Change Password</h3>
+    <div class="w3_login_module">
+        <div class="module form-module">
+            <div>
+               @* <h2>Change Password</h2>*@
+                <form>
+                    <input type="password" id="OldPassword" name="OldPassword" placeholder="Old Password" required="">
+                    <input type="password" id="NewPassword" name="NewPassword" placeholder="New Password" required="">
+                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" placeholder="Confirm Password" required="">
+                    <input type="button" id="btnCP" name="btnCP" value="Change Password">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#btnCP").click(function (e) {
+            e.preventDefault();
+
+            if ($("#OldPassword").val() == "") {
+                alert("Old password is required.");
+                return;
+            }
+            if ($("#NewPassword").val() == "") {
+                alert("New password is required.");
+                return;
+            }
+            if ($("#ConfirmPassword").val() == "") {
+                alert("Confirm password is required.");
+                return;
+            }
+
+            if ($("#ConfirmPassword").val() != $("#NewPassword").val()) {
+                alert("New password and Confirm password are does not match.");
+                return;
+            }
+
+            var objCP = {
+                "OldPassword": $("#OldPassword").val(),
+                "NewPassword": $("#NewPassword").val(),
+                "ConfirmPassword": $("#ConfirmPassword").val()
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ChangePasswordAjax", "ChangePassword")',
+                data: { "objCP": objCP },
+                success: function (data) {
+                    if (data == "1") {
+                        alert("Password changed successfully.");
+                    }
+                    else if (data == "-1") {
+                        alert("Old password is incorrect.");
+                    }
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
+        })
+    </script>
+</div>
